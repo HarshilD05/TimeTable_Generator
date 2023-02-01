@@ -17,6 +17,7 @@ struct Subject {
 
 /*  Functions   */
 std::vector<Subject> read_subjects_from_file(std::string file_name);
+std::vector<std::vector<std::string>> create_blank_TT (short days,short slots);
 
 /*  Testing */
 /*
@@ -132,6 +133,19 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
     }
 
     return subjects;
+}
+
+std::vector<std::vector<std::string>> create_blank_TT (short days,short slots) {
+    /*  To be returned  */
+    std::vector<std::vector<std::string>> tt;
+    
+    for (int d = 0;d<days;d++) {
+        std::vector<std::string> day {slots,"NULL"};
+
+        tt.push_back(day);
+    }
+
+    return tt;
 }
 
 #endif
