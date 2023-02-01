@@ -19,7 +19,7 @@ struct Subject {
 std::vector<Subject> read_subjects_from_file(std::string file_name);
 
 /*  Testing */
-// /*
+/*
 int main () {
 
     return 0;
