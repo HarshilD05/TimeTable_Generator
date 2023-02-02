@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include<vector>
+#include<unordered_map>
 #include<fstream>
 
 struct Subject {
@@ -18,6 +19,7 @@ struct Subject {
 /*  Functions   */
 std::vector<Subject> read_subjects_from_file(std::string file_name);
 std::vector<std::vector<std::string>> create_blank_TT (short days,short slots);
+void list_of_lecs (std::vector<Subject> subjects, std::vector<std::string> &list, std::unordered_map<std::string,int> &lec_count);
 
 /*  Testing */
 /*
@@ -135,17 +137,63 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
     return subjects;
 }
 
-std::vector<std::vector<std::string>> create_blank_TT (short days,short slots) {
+std::vector<std::vector<std::string>> create_blank_TT (int days,int slots) {
     /*  To be returned  */
     std::vector<std::vector<std::string>> tt;
     
     for (int d = 0;d<days;d++) {
-        std::vector<std::string> day {slots,"NULL"};
+        std::vector<std::string> day (slots,"NULL");
 
         tt.push_back(day);
     }
 
     return tt;
 }
+
+void list_of_lecs (std::vector<Subject> subjects, std::vector<std::string> &list, std::unordered_map<std::string,int> &lec_count) {
+
+    for (Subject sub : subjects) {
+        /*  Adding Theory and Practical Lectures in 'list'   */
+        if (sub.n_theory) {
+            list.push_back(sub.subject_code + "_T");
+            lec_count[sub.subject_code + "_T"] = sub.n_theory;
+        }
+        if (sub.n_practicals) {
+            list.push_back(sub.subject_code + "_P");
+            lec_count[sub.subject_code + "_P"] = sub.n_practicals;
+        }
+    }
+
+}
+
+void reverse_string(std::string &str) {
+    int len = str.size()-1;
+
+    for (int x = 0;x < len / 2 ;x++) {
+        char temp = str[x];
+        str[x] = str[len - x];
+        str[len - x] = temp;
+    }
+}
+
+std::string get_Div_Name (std::string file_path) {
+    std::string n = "";
+
+    /*  Getting File Name   */    
+    for (int s = file_path.size()-1;s>=0;s--) {
+        if (file_path[s] == '/' || file_path[s] == '\\') break;
+        n += file_path[s];
+    }
+
+    /*  Removing Extension  */
+    std::string name = "";
+    for (int i = n.size()-1;i>=0;i--) {
+        if (n[i] == '.') break;
+        name += n[i];
+    }
+
+    return name;
+}
+
 
 #endif
