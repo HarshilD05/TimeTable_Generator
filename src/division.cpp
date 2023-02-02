@@ -44,6 +44,20 @@ class Division {
         }
     }
 
+    void undo_fill(int day,int slot) {
+        std::string val = TT[day][slot];
+        if (val != "NULL") {
+            int len = val.size()-1;
+
+            TT[day][slot] = "NULL";
+            if (val[len] == 'P') {
+                TT[day][slot+1] = "NULL";
+            }
+
+        }
+
+    }
+
     void print_TT () {
         std::vector<std::string> DAYS = {"MON","TUE","WED","THU","FRI","SAT"};
 
@@ -63,7 +77,7 @@ class Division {
 /*  Functions   */
 
 /*  Testing */
-// /*
+/*
 int main () {
     Division div("../input/CSE_B.csv");
 
