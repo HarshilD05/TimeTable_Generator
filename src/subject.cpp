@@ -5,6 +5,7 @@
 #include<vector>
 #include<unordered_map>
 #include<fstream>
+#include<windows.h>
 
 struct Subject {
     std::string subject_name;
@@ -14,22 +15,19 @@ struct Subject {
 
     int n_theory;
     int n_practicals;    
+
+    void display () {
+        std::cout<<"Subject Name : "<< subject_name <<std::endl;
+        std::cout<<"Subject Code : "<< subject_code <<std::endl;
+        std::cout<<"Teacher Name : "<< teacher_name <<std::endl;
+        std::cout<<"Teacher Code : "<< teacher_code <<std::endl;
+
+        std::cout<<"Theory : "<< n_theory <<std::endl;
+        std::cout<<"Practicals : "<< n_practicals <<std::endl;
+    }
 };
 
 /*  Functions   */
-std::vector<Subject> read_subjects_from_file(std::string file_name);
-std::vector<std::vector<std::string>> create_blank_TT (short days,short slots);
-void list_of_lecs (std::vector<Subject> subjects, std::vector<std::string> &list, std::unordered_map<std::string,int> &lec_count);
-
-/*  Testing */
-/*
-int main () {
-
-    return 0;
-}
-// */
-
-/*  Function Definition */
 std::vector<Subject> read_subjects_from_file(std::string file_name) {
     /*  Creating File of the file name */
     std::ifstream file(file_name);
@@ -119,16 +117,9 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
 
         /*  INput of Teacher Code   */
         for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
-
-                sub.teacher_code = data;
-                data = "";
-
-                i++;
-                break;
-            }
             data += row[i];
         }
+        sub.teacher_code = data;
 
         /*  Pushing Sub in vector   */
         subjects.push_back(sub);
@@ -195,5 +186,32 @@ std::string get_Div_Name (std::string file_path) {
     return name;
 }
 
+std::vector<std::string> get_all_files_from_folder (std::string folder,std::string extension = "*") {
+    /*  To be returned  */
+    std::vector<std::string> names;
+
+    std::string search_path = folder + "/*." + extension;
+    WIN32_FIND_DATA fd; 
+    HANDLE hFind = ::FindFirstFile(search_path.c_str(), &fd); 
+    if(hFind != INVALID_HANDLE_VALUE) { 
+        do { 
+            // read all (real) files in current folder
+            // , delete '!' read other 2 default folder . and ..
+            if(! (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ) {
+                names.push_back(fd.cFileName);
+            }
+        }while(::FindNextFile(hFind, &fd)); 
+        ::FindClose(hFind); 
+    } 
+    return names;
+}
+
+/*  Testing */
+/*
+int main () {
+
+    return 0;
+}
+// */
 
 #endif

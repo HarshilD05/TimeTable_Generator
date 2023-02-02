@@ -31,6 +31,10 @@ class Division {
         for (auto p : lec_count_map) {
             std::cout<< p.first <<"\t"<< p.second <<std::endl;
         }
+
+        for (auto p : sub_teacher_map) {
+            std::cout<< p.first <<"\t"<< p.second <<std::endl;
+        }
     }
 
     void fill_slot(int day,int slot,std::string val) {
@@ -72,24 +76,11 @@ class Division {
         std::cout<<"\n\n";
     }
 
+    friend std::vector<std::vector<std::string>> uniq_teachers (std::vector<Division> divisions);
+
 };
 
 /*  Functions   */
-
-/*  Testing */
-/*
-int main () {
-    Division div("../input/CSE_B.csv");
-
-    div.print_Details();
-
-    div.print_TT();
-
-    return 0;
-}
-// */
-
-/*  Function Definition */
 Division :: Division (std::string file_name) {
     /*  Initializing Data   */
     div_name = get_Div_Name(file_name);
@@ -108,5 +99,62 @@ Division :: Division (std::string file_name) {
     }
 
 }
+
+std::vector<Division> division_list (std::string folder_name) {
+    /*  To be Returned  */
+    std::vector<Division> div_list;
+    /*  List of Files in folder */
+    std::vector<std::string> file_list = get_all_files_from_folder(folder_name,"csv");
+
+    for (std::string file : file_list) {
+        Division div (folder_name + "/" + file);
+        div_list.push_back(div);
+    }
+
+    return div_list;
+}
+
+std::vector<std::vector<std::string>> uniq_teachers (std::vector<Division> divisions) {
+    /*  To be returned   */
+    std::vector<std::vector<std::string>> t_list;
+
+    /*  Itterating Divisions */
+    for (auto div : divisions) {
+        /*  Iterating All Subject for each Div  */
+        for (Subject sub : div.subjects) {
+            bool found = false;
+            /*  Checking for repetetion in the List */
+            for (auto t : t_list) {
+                if (t[1] == sub.teacher_code) {
+                    found = true;
+                    break;
+                }
+            }
+            /*  Adding to list only if new Teacher  */
+            if (!found) {
+                t_list.push_back( {sub.teacher_name,sub.teacher_code} );
+            }
+
+        }
+
+    }
+
+    return t_list;
+}
+
+/*  Testing */
+/*
+int main () {
+    Division div("../input/CSE_B.csv");
+
+    div.print_Details();
+
+    div.print_TT();
+
+    div.sub_teacher_map["FCN"];
+
+    return 0;
+}
+// */
 
 #endif
