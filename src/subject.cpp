@@ -10,20 +10,33 @@
 struct Subject {
     std::string subject_name;
     std::string subject_code;
-    std::string teacher_name;
-    std::string teacher_code;
+    std::string T_teacher_name;
+    std::string T_teacher_code;
+
+    std::string P_B1_teacher_name;
+    std::string P_B1_teacher_code;
+
+    std::string P_B2_teacher_name;
+    std::string P_B2_teacher_code;
 
     int n_theory;
     int n_practicals;    
 
     void display () {
-        std::cout<<"Subject Name : "<< subject_name <<std::endl;
+        std::cout<<"\nSubject Name : "<< subject_name <<std::endl;
         std::cout<<"Subject Code : "<< subject_code <<std::endl;
-        std::cout<<"Teacher Name : "<< teacher_name <<std::endl;
-        std::cout<<"Teacher Code : "<< teacher_code <<std::endl;
 
         std::cout<<"Theory : "<< n_theory <<std::endl;
+        std::cout<<"Theory Teacher Name : "<< T_teacher_name <<std::endl;
+        std::cout<<"Theory Teacher Code : "<< T_teacher_code <<std::endl;
+
         std::cout<<"Practicals : "<< n_practicals <<std::endl;
+        std::cout<<"Practicals Batch 1 Teacher Name : "<< P_B1_teacher_name <<std::endl;
+        std::cout<<"Practicals Batch 1 Teacher Code : "<< P_B1_teacher_code <<std::endl;
+
+        std::cout<<"Practicals Batch 2 Teacher Name : "<< P_B2_teacher_name <<std::endl;
+        std::cout<<"Practicals Batch 2 Teacher Code : "<< P_B2_teacher_code <<std::endl<<std::endl;
+
     }
 };
 
@@ -89,6 +102,32 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
             data += row[i];
         }
 
+        /*  Input of Theory Teacher Name   */
+        for (i;i<row.size() ;i++) {
+            if (row[i] == ',') {
+
+                sub.T_teacher_name = data;
+                data = "";
+
+                i++;
+                break;
+            }
+            data += row[i];
+        }
+
+        /*  Input of Theory Teacher Code   */
+        for (i;i<row.size() ;i++) {
+            if (row[i] == ',') {
+
+                sub.T_teacher_code = data;
+                data = "";
+
+                i++;
+                break;
+            }
+            data += row[i];
+        }
+
         /*  input for number of Practicals   */
         for (i;i<row.size() ;i++) {
             if (row[i] == ',') {
@@ -102,11 +141,11 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
             data += row[i];
         }
 
-        /*  Input of Teacher Name   */
+        /*  Input of Batch 1 Practical Teacher Name   */
         for (i;i<row.size() ;i++) {
             if (row[i] == ',') {
 
-                sub.teacher_name = data;
+                sub.P_B1_teacher_name = data;
                 data = "";
 
                 i++;
@@ -115,11 +154,37 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
             data += row[i];
         }
 
-        /*  INput of Teacher Code   */
+        /*  Input of Batch 1 Practical Teacher Code  */
+        for (i;i<row.size() ;i++) {
+            if (row[i] == ',') {
+
+                sub.P_B1_teacher_code = data;
+                data = "";
+
+                i++;
+                break;
+            }
+            data += row[i];
+        }
+
+        /*  Input of Batch 2 Practical Teacher Name   */
+        for (i;i<row.size() ;i++) {
+            if (row[i] == ',') {
+
+                sub.P_B2_teacher_name = data;
+                data = "";
+
+                i++;
+                break;
+            }
+            data += row[i];
+        }
+
+        /*  Input of Batch 2 Practicals Teacher Code   */
         for (i;i<row.size() ;i++) {
             data += row[i];
         }
-        sub.teacher_code = data;
+        sub.P_B2_teacher_code = data;
 
         /*  Pushing Sub in vector   */
         subjects.push_back(sub);
@@ -209,6 +274,11 @@ std::vector<std::string> get_all_files_from_folder (std::string folder,std::stri
 /*  Testing */
 /*
 int main () {
+    std::vector<Subject> subs = read_subjects_from_file("../input/CSE_B.csv");
+
+    for (Subject s : subs) {
+        s.display();
+    }
 
     return 0;
 }
