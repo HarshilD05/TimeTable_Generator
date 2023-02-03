@@ -95,7 +95,9 @@ Division :: Division (std::string file_name) {
 
     /*  Subject and Teacher Map */
     for (Subject sub : subjects) {
-        sub_teacher_map[sub.subject_code] = sub.teacher_code;
+        sub_teacher_map[sub.subject_code + "_T"] = sub.T_teacher_code;
+        sub_teacher_map[sub.subject_code + "_B1_P"] = sub.P_B1_teacher_code;
+        sub_teacher_map[sub.subject_code + "_B2_P"] = sub.P_B2_teacher_code;
     }
 
 }
@@ -123,16 +125,44 @@ std::vector<std::vector<std::string>> uniq_teachers (std::vector<Division> divis
         /*  Iterating All Subject for each Div  */
         for (Subject sub : div.subjects) {
             bool found = false;
+
+            /*  For Theory Teacher  */
             /*  Checking for repetetion in the List */
             for (auto t : t_list) {
-                if (t[1] == sub.teacher_code) {
+                if (t[1] == sub.T_teacher_code) {
                     found = true;
                     break;
                 }
             }
             /*  Adding to list only if new Teacher  */
             if (!found) {
-                t_list.push_back( {sub.teacher_name,sub.teacher_code} );
+                t_list.push_back( {sub.T_teacher_name,sub.T_teacher_code} );
+            }
+
+            /*  For Practical Batch 1 Teacher   */
+            /*  Checking for repetetion in the List */
+            for (auto t : t_list) {
+                if (t[1] == sub.P_B1_teacher_code) {
+                    found = true;
+                    break;
+                }
+            }
+            /*  Adding to list only if new Teacher  */
+            if (!found) {
+                t_list.push_back( {sub.P_B1_teacher_name,sub.P_B1_teacher_code} );
+            }
+
+            /*  For Practical Batch 2 Teacher   */
+            /*  Checking for repetetion in the List */
+            for (auto t : t_list) {
+                if (t[1] == sub.P_B2_teacher_code) {
+                    found = true;
+                    break;
+                }
+            }
+            /*  Adding to list only if new Teacher  */
+            if (!found) {
+                t_list.push_back( {sub.P_B2_teacher_name,sub.P_B2_teacher_code} );
             }
 
         }
