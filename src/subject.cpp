@@ -1,11 +1,9 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 
-#include<iostream>
-#include<vector>
 #include<unordered_map>
-#include<fstream>
 #include<windows.h>
+#include"read_csv.cpp"
 
 struct Subject {
     std::string subject_name;
@@ -38,6 +36,7 @@ struct Subject {
         std::cout<<"Practicals Batch 2 Teacher Code : "<< P_B2_teacher_code <<std::endl<<std::endl;
 
     }
+
 };
 
 /*  Functions   */
@@ -48,145 +47,27 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
     /*  To be returned  */
     std::vector<Subject> subjects;
 
-    /*  Run till reach end of file  */
-    while ( !file.eof() ) {
-        /*  Storing each line of file in string row */
-        std::string row;
-        getline(file,row);
+    /*  Vector Storing Table data Values    */
+    std::vector<std::vector<std::string>> csv_tab = csv_table(file_name);
 
-        /*  Creating new Subject for each new Line 
-            and a string 'data' to store values 
-            and a counter 'i' to itterate through the string    */
+    for (auto row : csv_tab) {
+        /*  Creating Subject based on info in Row   */
         Subject sub;
-        std::string data = "";
-        short i = 0;
+        sub.subject_name = row[0];
+        sub.subject_code = row[1];
 
+        sub.n_theory = stoi(row[2] );
+        sub.T_teacher_name = row[3];
+        sub.T_teacher_code = row[4];
 
-        /*  Itterating Through the line till ',' is reached 
-            Input for Subject Name   */
-        for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
+        sub.n_practicals = stoi( row[5] );
+        sub.P_B1_teacher_name = row[6];
+        sub.P_B1_teacher_code = row[7];
 
-                sub.subject_name = data;
-                data = "";
+        sub.P_B2_teacher_name = row[8];
+        sub.P_B2_teacher_code = row[9];
 
-                i++;
-                break;
-            }
-            data += row[i];
-        }
-
-        /*  input for Subject Code   */
-        for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
-
-                sub.subject_code = data;
-                data = "";
-
-                i++;
-                break;
-            }
-            data += row[i];
-        }
-
-        /*  input for number of Theory lectures  */
-        for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
-
-                sub.n_theory = stoi(data);
-                data = "";
-
-                i++;
-                break;
-            }
-            data += row[i];
-        }
-
-        /*  Input of Theory Teacher Name   */
-        for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
-
-                sub.T_teacher_name = data;
-                data = "";
-
-                i++;
-                break;
-            }
-            data += row[i];
-        }
-
-        /*  Input of Theory Teacher Code   */
-        for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
-
-                sub.T_teacher_code = data;
-                data = "";
-
-                i++;
-                break;
-            }
-            data += row[i];
-        }
-
-        /*  input for number of Practicals   */
-        for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
-
-                sub.n_practicals = stoi(data);
-                data = "";
-
-                i++;
-                break;
-            }
-            data += row[i];
-        }
-
-        /*  Input of Batch 1 Practical Teacher Name   */
-        for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
-
-                sub.P_B1_teacher_name = data;
-                data = "";
-
-                i++;
-                break;
-            }
-            data += row[i];
-        }
-
-        /*  Input of Batch 1 Practical Teacher Code  */
-        for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
-
-                sub.P_B1_teacher_code = data;
-                data = "";
-
-                i++;
-                break;
-            }
-            data += row[i];
-        }
-
-        /*  Input of Batch 2 Practical Teacher Name   */
-        for (i;i<row.size() ;i++) {
-            if (row[i] == ',') {
-
-                sub.P_B2_teacher_name = data;
-                data = "";
-
-                i++;
-                break;
-            }
-            data += row[i];
-        }
-
-        /*  Input of Batch 2 Practicals Teacher Code   */
-        for (i;i<row.size() ;i++) {
-            data += row[i];
-        }
-        sub.P_B2_teacher_code = data;
-
-        /*  Pushing Sub in vector   */
+        /*  Pushing this Subject in list of Subjects    */
         subjects.push_back(sub);
     }
 
@@ -215,21 +96,15 @@ void list_of_lecs (std::vector<Subject> subjects, std::vector<std::string> &list
             lec_count[sub.subject_code + "_T"] = sub.n_theory;
         }
         if (sub.n_practicals) {
-            list.push_back(sub.subject_code + "_P");
-            lec_count[sub.subject_code + "_P"] = sub.n_practicals;
+            list.push_back(sub.subject_code + "_B1_P");
+            lec_count[sub.subject_code + "_B1_P"] = sub.n_practicals;
+
+            list.push_back(sub.subject_code + "_B2_P");
+            lec_count[sub.subject_code + "_B2_P"] = sub.n_practicals;
+
         }
     }
 
-}
-
-void reverse_string(std::string &str) {
-    int len = str.size()-1;
-
-    for (int x = 0;x < len / 2 ;x++) {
-        char temp = str[x];
-        str[x] = str[len - x];
-        str[len - x] = temp;
-    }
 }
 
 std::string get_Div_Name (std::string file_path) {
@@ -271,6 +146,9 @@ std::vector<std::string> get_all_files_from_folder (std::string folder,std::stri
     return names;
 }
 
+#endif
+
+
 /*  Testing */
 /*
 int main () {
@@ -283,5 +161,3 @@ int main () {
     return 0;
 }
 // */
-
-#endif
