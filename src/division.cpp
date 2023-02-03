@@ -22,6 +22,7 @@ class Division {
 
     void print_Details () {
         std::cout<<"Division Name : "<< div_name <<std::endl;
+
         std::cout<<"List of Lectures : "<<std::endl;
         for (std::string l : lec_list) {
             std::cout<< l <<" ";
@@ -32,9 +33,19 @@ class Division {
             std::cout<< p.first <<"\t"<< p.second <<std::endl;
         }
 
+        std::cout<<"\nSubject Teacher Map : "<<std::endl;
         for (auto p : sub_teacher_map) {
             std::cout<< p.first <<"\t"<< p.second <<std::endl;
         }
+
+    }
+
+    bool are_lecs_over(std::string lec) {
+        return ( (lec_count_map[lec] == 0)? true : false );
+    }
+
+    bool is_NULL_slot(int day,int slot) {
+        return ( (TT[day][slot] == "NULL")? true : false );
     }
 
     void fill_slot(int day,int slot,std::string val) {
@@ -46,6 +57,10 @@ class Division {
             TT[day][slot] = val;
             TT[day][slot+1] = val;
         }
+
+        /*  Updating Lecture Count  */
+        lec_count_map[val]--;
+        
     }
 
     void undo_fill(int day,int slot) {
@@ -60,6 +75,8 @@ class Division {
 
         }
 
+        /*  Updating Lecture Count  */
+        lec_count_map[val]++;
     }
 
     void print_TT () {
@@ -172,10 +189,12 @@ std::vector<std::vector<std::string>> uniq_teachers (std::vector<Division> divis
     return t_list;
 }
 
+#endif
+
 /*  Testing */
 /*
 int main () {
-    Division div("../input/CSE_B.csv");
+    Division div("../input/CSE_A.csv");
 
     div.print_Details();
 
@@ -186,5 +205,3 @@ int main () {
     return 0;
 }
 // */
-
-#endif

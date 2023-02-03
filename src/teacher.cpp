@@ -17,6 +17,10 @@ class Teacher {
         std::cout<<"Code : "<< code <<std::endl;
     }
 
+    bool is_NULL_slot(int day,int slot) {
+        return ( (TT[day][slot] == "NULL")? true : false );
+    }
+
     void fill_slot(int day,int slot,std::string val) {
         int len = val.size()-1;
         if (val[len] == 'T') {
@@ -74,6 +78,8 @@ void create_Teacher_vector (std::vector<std::vector<std::string>> t_list,std::ve
     }
 }
 
+#endif
+
 /*  Testing */
 /*
 int main() {
@@ -86,14 +92,12 @@ int main() {
 
     create_Teacher_vector(t_list,teachers,t_map);
 
-    for (Teacher t : teachers) {
-        t.display();
+    for (auto t : t_map) {
+        std::cout<< t.first <<" "<< t.second <<std::endl;
     }
 
-    std::cout<< t_map["SUM"] <<std::endl;
+    std::cout<< t_map["PPB"] <<std::endl;
     
     return 0;
 }
 // */
-
-#endif
