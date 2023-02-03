@@ -57,8 +57,9 @@ std::vector<std::vector<std::string>> csv_table (std::string file) {
             
             int i = 0;
 
-            while (i < line.size()-1) {
-                if (line[i] == ',') {
+            while (i < line.size()) {
+                if (line[i] == ',' || i == line.size()-1) {
+                    if (i == line.size()-1) data += line[i]; 
                     row.push_back(data);
                     data = "";
                     i++;

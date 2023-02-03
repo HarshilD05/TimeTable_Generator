@@ -49,13 +49,17 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
 
     /*  Vector Storing Table data Values    */
     std::vector<std::vector<std::string>> csv_tab = csv_table(file_name);
+    std::cout<<"Table Created"<<std::endl;
+    std::cout<<"Table Dimensions : "<< csv_tab.size() <<"x"<< csv_tab[0].size() <<std::endl;
 
     for (auto row : csv_tab) {
         /*  Creating Subject based on info in Row   */
         Subject sub;
+        
         sub.subject_name = row[0];
         sub.subject_code = row[1];
 
+        
         sub.n_theory = stoi(row[2] );
         sub.T_teacher_name = row[3];
         sub.T_teacher_code = row[4];
