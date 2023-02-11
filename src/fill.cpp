@@ -4,7 +4,9 @@
 #include"teacher.cpp"
 
 /*  Functions   */
-void next_fill (std::vector<Division> divisions,bool &complete,int div, int day,int slot) {
+void fill_time_table(bool &complete, std::vector<Division> &divisions,std::vector<Teacher> &teachers,std::unordered_map<std::string,int> t_map,int div,int day,int slot);
+
+void next_fill (bool &complete, std::vector<Division> divisions,std::vector<Teacher> teachers, std::unordered_map<std::string,int> t_map,int div, int day,int slot) {
     /*  If all 6 days Filled then TT complete   */
     if (day < 6) {
         /*  If all 6 slot of day filled then reset slot to 0 and increment day  */
@@ -25,7 +27,7 @@ void next_fill (std::vector<Division> divisions,bool &complete,int div, int day,
     }
     else complete = true;
 
-    fill_time_table();
+    fill_time_table(complete,divisions,teachers,t_map,div,day,slot);
 }
 
 bool is_valid_lec(Division div,Teacher teacher,int day,int slot,std::string lec) {
@@ -38,7 +40,7 @@ bool is_valid_lec(Division div,Teacher teacher,int day,int slot,std::string lec)
     return true;
 }
 
-void fill_time_table(std::vector<Division> &divisions,std::vector<Teacher> &teachers,std::unordered_map<std::string,int> t_map,bool &complete,int div = 0,int day=0,int slot=0) {
+void fill_time_table(bool &complete, std::vector<Division> &divisions,std::vector<Teacher> &teachers,std::unordered_map<std::string,int> t_map,int div = 0,int day=0,int slot=0) {
     /*  Fill only if Valid day and Slot */
     if (day < 6 && slot < 6) {
 
@@ -65,7 +67,7 @@ void fill_time_table(std::vector<Division> &divisions,std::vector<Teacher> &teac
                     /*  Filling Slot in Teachers TT */
                     teachers[idx].fill_slot(day,slot,l);
 
-                    next_fill();
+                    next_fill(complete,divisions,teachers,t_map,div,day,slot);
                 }
                 
                 /*  Restoring Slot to Null if Returning from a backtrack */
@@ -78,17 +80,33 @@ void fill_time_table(std::vector<Division> &divisions,std::vector<Teacher> &teac
             
 
         }
-        else next_fill();
+        else next_fill(complete,divisions,teachers,t_map,div,day,slot);
     }
-    else next_fill();
+    else next_fill(complete,divisions,teachers,t_map,div,day,slot);
 
 }
 
 #endif
 
 /*  Testing */
-/*
+// /*
 int main () {
+    std::cout<<"Main";
+    std::vector<Division> divs = division_list("../input");
+    std::cout<<"\nDivision List created.";
+
+    std::vector<std::vector<std::string>> t_list = uniq_teachers(divs);
+
+    std::vector<Teacher> teachers;
+    std::unordered_map<std::string,int> t_map;
+    create_Teacher_vector(t_list,teachers,t_map);
+    std::cout<<"\nTeacher Vector created!!";
+
+    bool fin = false;
+    std::cout<<"\n\nFilling Starts...";
+    fill_time_table(fin,divs,teachers,t_map);
+
+    std::cout<<"\n\nFilling Complete!!!";
     
     return 0;
 }
