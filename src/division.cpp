@@ -16,17 +16,25 @@ class Division {
     public : 
     std::string div_name;
     std::vector<std::string> lec_list;
+    std::vector<std::string> B2_prac_list;
     std::unordered_map<std::string,std::string> sub_teacher_map;
 
     Division (std::string file_name);
 
     void print_Details () {
-        std::cout<<"Division Name : "<< div_name <<std::endl;
+        std::cout<<"\nDivision Name : "<< div_name <<std::endl;
 
-        std::cout<<"List of Lectures : "<<std::endl;
+        std::cout<<"\nList of Lectures : "<<std::endl;
         for (std::string l : lec_list) {
             std::cout<< l <<" ";
         }
+        std::cout<<std::endl;
+
+        std::cout<<"\nPracticals : "<<std::endl;
+        for (std::string p : B2_prac_list) {
+            std::cout<< p <<" ";
+        }
+        std::cout<<std::endl;
         
         std::cout<<"\nLecture Counts : "<<std::endl;
         for (auto p : lec_count_map) {
@@ -105,7 +113,7 @@ Division :: Division (std::string file_name) {
     TT = create_blank_TT(6,6);
 
     /*  Lecture List and count map */
-    list_of_lecs(subjects,lec_list,lec_count_map);
+    list_of_lecs(subjects,lec_list,B2_prac_list,lec_count_map);
     /*  Randomising Lec List    */
     std::default_random_engine e( time(0) );
     std::shuffle(lec_list.begin(),lec_list.end(),e);
@@ -192,7 +200,7 @@ std::vector<std::vector<std::string>> uniq_teachers (std::vector<Division> divis
 #endif
 
 /*  Testing */
-/*
+// /*
 int main () {
     Division div("../input/CSE_A.csv");
 

@@ -49,8 +49,8 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
 
     /*  Vector Storing Table data Values    */
     std::vector<std::vector<std::string>> csv_tab = csv_table(file_name);
-    std::cout<<"Table Created"<<std::endl;
-    std::cout<<"Table Dimensions : "<< csv_tab.size() <<"x"<< csv_tab[0].size() <<std::endl;
+    // std::cout<<"Table Created"<<std::endl;
+    // std::cout<<"Table Dimensions : "<< csv_tab.size() <<"x"<< csv_tab[0].size() <<std::endl;
 
     /*  Skipping The first Row of Titles and Collecting data    */
     for (int i = 1;i<csv_tab.size();i++) {
@@ -78,6 +78,8 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
         subjects.push_back(sub);
     }
 
+    // std::cout<<"Subject Vector Created."<<std::endl;
+
     return subjects;
 }
 
@@ -94,21 +96,20 @@ std::vector<std::vector<std::string>> create_blank_TT (int days,int slots) {
     return tt;
 }
 
-void list_of_lecs (std::vector<Subject> subjects, std::vector<std::string> &list, std::unordered_map<std::string,int> &lec_count) {
+void list_of_lecs (std::vector<Subject> subjects, std::vector<std::string> &lec_list, std::vector<std::string> &B2_p_list, std::unordered_map<std::string,int> &lec_count) {
 
     for (Subject sub : subjects) {
         /*  Adding Theory and Practical Lectures in 'list'   */
         if (sub.n_theory) {
-            list.push_back(sub.subject_code + "_T");
+            lec_list.push_back(sub.subject_code + "_T");
             lec_count[sub.subject_code + "_T"] = sub.n_theory;
         }
         if (sub.n_practicals) {
-            list.push_back(sub.subject_code + "_B1_P");
+            lec_list.push_back(sub.subject_code + "_B1_P");
             lec_count[sub.subject_code + "_B1_P"] = sub.n_practicals;
 
-            list.push_back(sub.subject_code + "_B2_P");
+            B2_p_list.push_back(sub.subject_code + "_B2_P");
             lec_count[sub.subject_code + "_B2_P"] = sub.n_practicals;
-
         }
     }
 
