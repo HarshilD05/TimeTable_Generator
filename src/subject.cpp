@@ -52,7 +52,10 @@ std::vector<Subject> read_subjects_from_file(std::string file_name) {
     std::cout<<"Table Created"<<std::endl;
     std::cout<<"Table Dimensions : "<< csv_tab.size() <<"x"<< csv_tab[0].size() <<std::endl;
 
-    for (auto row : csv_tab) {
+    /*  Skipping The first Row of Titles and Collecting data    */
+    for (int i = 1;i<csv_tab.size();i++) {
+        auto row = csv_tab[i];
+
         /*  Creating Subject based on info in Row   */
         Subject sub;
         
