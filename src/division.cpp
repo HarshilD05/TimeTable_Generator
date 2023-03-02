@@ -52,6 +52,10 @@ class Division {
         return ( (lec_count_map[lec] == 0)? true : false );
     }
 
+    std::string slot_Val(int day,int slot) {
+        return TT[day][slot];
+    }
+
     bool is_NULL_slot(int day,int slot) {
         return ( (TT[day][slot] == "NULL")? true : false );
     }
@@ -68,6 +72,7 @@ class Division {
 
         /*  Updating Lecture Count  */
         lec_count_map[val]--;
+        std::cout<<"\n \t"<< val <<" Lectures left : "<< lec_count_map[val] ;
         
     }
 
@@ -85,11 +90,13 @@ class Division {
 
         /*  Updating Lecture Count  */
         lec_count_map[val]++;
+        std::cout<<"\n \t"<< val <<" Lectures left : "<< lec_count_map[val] ;
     }
 
     void print_TT () {
         std::vector<std::string> DAYS = {"MON","TUE","WED","THU","FRI","SAT"};
 
+        std::cout<<"\n\n "<< div_name <<" TT : \n";
         for (int d = 0;d<6;d++) {
             std::cout<<std::endl;
             std::cout<< DAYS[d] <<" : ";
@@ -125,6 +132,7 @@ Division :: Division (std::string file_name) {
         sub_teacher_map[sub.subject_code + "_B2_P"] = sub.P_B2_teacher_code;
     }
 
+    std::cout<<"\n \tDivision "<< div_name <<" created.";
 }
 
 std::vector<Division> division_list (std::string folder_name) {
@@ -202,13 +210,11 @@ std::vector<std::vector<std::string>> uniq_teachers (std::vector<Division> divis
 /*  Testing */
 /*
 int main () {
-    Division div("../input/CSE_A.csv");
+    std::vector<Division> divs = division_list("../input");
 
-    div.print_Details();
-
-    div.print_TT();
-
-    div.sub_teacher_map["FCN"];
+    for (auto div : divs) {
+        div.print_Details();
+    }
 
     return 0;
 }

@@ -49,6 +49,7 @@ class Teacher {
     void print_TT () {
         std::vector<std::string> DAYS = {"MON","TUE","WED","THU","FRI","SAT"};
 
+        std::cout<<"\n\n "<< name <<" TT : \n";
         for (int d = 0;d<6;d++) {
             std::cout<<std::endl;
             std::cout<< DAYS[d] <<" : ";
@@ -66,6 +67,7 @@ class Teacher {
 /*  Functions   */
 Teacher::Teacher (std::string name,std::string code) : name(name), code(code){
     TT = create_blank_TT(6,6);
+    std::cout<<"\n \tTeacher "<< name <<" Created...";
 }
 
 void create_Teacher_vector (std::vector<std::vector<std::string>> t_list,std::vector<Teacher> &teachers,std::unordered_map<std::string,int> &t_map) {
